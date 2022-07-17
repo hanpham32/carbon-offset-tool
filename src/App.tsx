@@ -7,27 +7,16 @@ import Home from './pages/Home';
 import Navbar from './components/Navbar';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
 
-import './App.css';
-
-function App() {
+export default function App() {
   return (
-    <Router>
-      <ToastContainer 
-        position='top-right'
-        autoClose={3000}
-        closeOnClick
-        draggable
-        pauseOnHover
-        theme='dark'
-      />
-      <Navbar />
-      <Routes>
-        <Route path='/' element={ <Home /> } />
-      </Routes>
-    </Router>
-  );
+    <div>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path='/' element={ <Home /> } />
+        </Routes>
+      </Router>
+    </div>
+  )
 }
-
-export default App;

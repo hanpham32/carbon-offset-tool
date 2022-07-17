@@ -9,7 +9,7 @@ export default function Home() {
     return(
         <div>
             Home
-            <button onClick={notify}>Notify!</button>
+            <button onClick={notify} >Notify!</button>
             <ToastContainer 
                 position='top-right'
                 autoClose={3000}
