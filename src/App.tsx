@@ -8,9 +8,7 @@ import Navbar from './components/Navbar';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import './App.css';
-
-function App() {
+export default function App() {
   return (
     <Router>
       {/* <Navbar /> */}
@@ -20,5 +18,3 @@ function App() {
     </Router>
   );
 }
-
-export default App;
