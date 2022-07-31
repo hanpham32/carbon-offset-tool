@@ -1,14 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Buffer } from "buffer";
 
-import { TextField, Box, Button, Menu, MenuItem, Divider } from "@mui/material";
-import ListIcon from "@mui/icons-material/Menu";
+import { TextField, Box, Button, MenuItem, Divider, ButtonGroup } from "@mui/material";
+
+interface State {
+  address: string;
+  amount: number;
+  chain: string;
+  data: any;
+  loading: boolean;
+}
+
+const chains = [
+  {
+    value: 'eth',
+    label: 'Ethereum',
+  },
+  {
+    value: 'sol',
+    label: 'Solana',
+  },
+];
 
 export default function DraftCryptoCarbonOffset() {
-  const [address, setAddress] = useState("");
-  const [amount, setAmount] = useState("");
 
-  const [data, setData] = useState(null);
+  const [address, setAddress] = useState("");
+  const [amount, setAmount] = useState(1);
+  const [chain, setChain] = useState("eth");
+
+  // const [data, setData] = useState(null);
+  const [amountCarbon, setAmountCarbon] = useState(0);
   const [loading, setLoading] = useState(true);
 
   // MenuList
@@ -21,6 +42,7 @@ export default function DraftCryptoCarbonOffset() {
     setAnchorEl(null);
   };
 
+  // API Keys
   const pk_test =
     "pk_live_a9d6aa3ace41842eb0ccab4b98e8d53c26803a8a7481afcdbda011a1023f78a8";
   const sk_test =
@@ -50,33 +72,49 @@ export default function DraftCryptoCarbonOffset() {
       );
 
       // convert data to json
-      const data = await response.json();
+      const data = await response.json(); // local data variable
       console.log(data);
       // set state with result
-      setData(data);
+      setAmountCarbon(data.amount);
+      // setData(data);
     };
 
     // call function
     fetchData().catch(console.error);
-  }, []);
+    console.log({amountCarbon})
 
+  }, [amountCarbon]);
+
+  const displayAmount = amount > 0;
+  const handleIncrement = () => {
+    setAmount(amount + 1);
+  }
+  const handleDecrement = () => {
+    { displayAmount && setAmount(amount - 1) };
+  }
+  const handleChainChange = (e: any) => {
+    setChain(e.target.value);
+  }
   return (
     <div>
-      <div className="h3 text-lime-500">Draft Crypto Carbon Offset {"\n"}</div>
+      <div className="h3 text-lime-600">Draft Crypto Carbon Offset {"\n"}</div>
       <Divider />
       <Box
         component="form"
         sx={{
-          "& > :not(style)": { m: 1, width: "25ch" },
+          "& > :not(style)": { m: 1, width: "95%" },
         }}
         noValidate
         autoComplete="off"
       >
         <TextField
-          id="standard-basic"
-          label="Input address"
           variant="standard"
-          focused
+          margin="normal"
+          required
+          fullWidth
+          id="address"
+          label="Input address"
+          autoFocus
           value={address}
           onChange={(e) => {
             setAddress(e.target.value);
@@ -87,41 +125,33 @@ export default function DraftCryptoCarbonOffset() {
             },
           }}
         />
+        <div>Number of Transaction</div>
+
+        <ButtonGroup size="small">
+          <Button onClick={handleIncrement}>+</Button>
+          {displayAmount ? <Button>{amount}</Button> :
+            <Button disabled>{amount}</Button>
+          }
+          <Button onClick={handleDecrement}>-</Button>
+        </ButtonGroup>
+
         <TextField
-          id="standard-basic"
-          label="Number of transaction(s)"
-          variant="standard"
-          focused
-          value={amount}
-          onChange={(e) => {
-            setAmount(e.target.value);
-          }}
-          InputProps={{
-            style: {
-              color: "grey",
-            },
-          }}
-        />
+          id="outlined-select-chain"
+          select
+          label="Select Chain"
+          value={chain}
+          onChange={handleChainChange}
+          helperText="Please select your currency"
+        >
+          {chains.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+
       </Box>
-      <Button
-        id="basic-button"
-        onClick={handleClick}
-        startIcon={<ListIcon color="primary" />}
-      >
-        Select Chain
-      </Button>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        <MenuItem>Ethereum</MenuItem>
-        <MenuItem>Solana</MenuItem>
-      </Menu>
+
       <Divider />
     </div>
   );

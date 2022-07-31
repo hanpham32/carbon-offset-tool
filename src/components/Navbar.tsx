@@ -3,11 +3,12 @@ import { Stack, Button, styled, ButtonProps } from "@mui/material";
 import List from "@mui/material/Icon";
 
 const OptionsButton = styled(Button)<ButtonProps>({
-  color: "#9DD841",
+  color: "black",
+  fontWeight: "bold",
   "&:hover": {
     textDecoration: "underline",
     backgroundColor: "#9DD841",
-    color: "white",
+    color: "black",
   },
 });
 
