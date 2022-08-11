@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Buffer } from "buffer";
 import { Divider, Box, TextField, Button, Menu, MenuItem } from "@mui/material";
-import ListIcon from "@mui/icons-material/Menu";
+
+import { usePlacesWidget } from "react-google-autocomplete";
 
 import SubmitButton from "./SubmitButton";
+import DestinationAddress from "./DestinationAddress";
+import OriginAddress from "./OriginAddress";
 
 interface State {
   transportation_method: string;
@@ -70,8 +73,8 @@ export default function DraftShippingCarbonOffset() {
   const BodyContent = {
     transportation_method: transportationMethod,
     weight_lb: weight,
-    // destination_address: destinationAddress,
-    // origin_address: originAddress,
+    destination_address: destinationAddress,
+    origin_address: originAddress,
   };
 
   const fetchData = async () => {
@@ -98,7 +101,6 @@ export default function DraftShippingCarbonOffset() {
   const handleMethodChange = (e: any) => {
     setTransportationMethod(e.target.value);
   };
-
   return (
     <div>
       <div className="h3 text-lime-600">Draft Shipping Carbon Offset</div>
@@ -135,32 +137,24 @@ export default function DraftShippingCarbonOffset() {
           value={weight}
           onChange={(e) => {
             const weight = e.target.value;
-            {parseInt(weight) > 0 ? setWeight(parseInt(e.target.value)) : setWeight(0);}
+            {
+              parseInt(weight) > 0
+                ? setWeight(parseInt(e.target.value))
+                : setWeight(0);
+            }
           }}
           InputProps={inputPropsStyle}
           required
         />
-        <TextField
-          id="standard-basic"
-          label="Physical Destination Address"
-          variant="standard"
-          focused
-          value={destinationAddress}
-          onChange={(e) => {
-            setDestinationAddress(e.target.value);
-          }}
-          InputProps={inputPropsStyle}
+        <DestinationAddress
+          destinationAddress={destinationAddress}
+          setDestinationAddress={setDestinationAddress}
+          inputPropsStyle={inputPropsStyle}
         />
-        <TextField
-          id="standard-basic"
-          label="Physical Origin Address"
-          variant="standard"
-          focused
-          value={originAddress}
-          onChange={(e) => {
-            setOriginAddress(e.target.value);
-          }}
-          InputProps={inputPropsStyle}
+        <OriginAddress
+          originAddress={originAddress}
+          setOriginAddress={setOriginAddress}
+          inputPropsStyle={inputPropsStyle}
         />
       </Box>
       <Divider />

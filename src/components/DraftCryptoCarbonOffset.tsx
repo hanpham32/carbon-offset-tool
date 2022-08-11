@@ -67,7 +67,7 @@ export default function DraftCryptoCarbonOffset() {
     const response = await fetch(
       "https://api.getchange.io/api/v1/climate/crypto_offset",
       {
-        method: "GET",
+        method: "POST",
         headers,
         body: JSON.stringify(BodyContent),
       }
