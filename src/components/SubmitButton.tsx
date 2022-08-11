@@ -14,14 +14,14 @@ const CustomSubmitButton = styled(Button)<ButtonProps>({
   },
 });
 
-export default function SubmitButton() {
+export default function SubmitButton(props:{onClick:() => void}) {
 
   const notify = () => toast("Submitted");
 
   return (
     <div>
       <div className="flex flex-row-reverse mt-4">
-        <CustomSubmitButton variant="contained" size="medium" onClick={notify}>
+        <CustomSubmitButton variant="contained" size="medium" onClick={props.onClick}>
           Submit
         </CustomSubmitButton>
         <ToastContainer
